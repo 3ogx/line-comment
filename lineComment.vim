@@ -18,11 +18,13 @@
 "--------------------------------------------------
 " Avoid multiple sourcing
 "-------------------------------------------------- 
-if exists("loaded_line_comment")
-    finish
-endif
-let loaded_line_comment = 1
-
+"--------------------------------------------------
+" if exists("loaded_line_comment")
+"     finish
+" endif
+" let loaded_line_comment = 1
+" 
+"-------------------------------------------------- 
 "--------------------------------------------------
 " Key mapping
 "-------------------------------------------------- 
@@ -89,7 +91,11 @@ function! UnLineComment() range
     call MyCommentStr()
     
     let l:tmp = strpart(l:line, indent(l:firstln), strlen(s:comment_start))
-    echo strlen(l:tmp)
+
+
+    if strlen(s:comment_stop) || !empty(s:comment_stop)
+        let l:line = strpart(l:line, 0, strlen(l:line) - strlen(s:comment_stop))
+    endif
 
     if strpart(l:line, indent(l:firstln), strlen(s:comment_start)) == s:comment_start 
         let l:cutline = strpart(l:line, indent(l:firstln) + strlen(s:comment_start))
